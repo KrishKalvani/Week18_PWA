@@ -10,6 +10,11 @@
     <script src="products.js"></script>
     <!-- <link rel="stylesheet" href="PetDept.css"> -->
 </head>
+<script>
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
+</script>
 
 <body>
     <div id="app">
