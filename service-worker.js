@@ -26,11 +26,26 @@ self.addEventListener('install', (e) => {
 });
 
 //give the files is its there in the cache, otherwise don't
+// self.addEventListener('fetch', function (e){
+//     e.respondWith(
+//         caches.match(e.request).then(function (r){
+//             console.log('[Service Worker] Fetching resource: ' + e.request.url);
+//             return r
+//         })
+//     )
+// })
+
+
+//helps to work the app offline, here we are returning our file, if its therem otherwise if not, it will fetch the file from third party sources.
 self.addEventListener('fetch', function (e){
     e.respondWith(
         caches.match(e.request).then(function (r){
-            console.log('[Service Worker] Fetching resource: ' + e.request.url);
-            return r
+            return r || fetch(e.request).then(function(response){
+                return caches.open(cacheName).then(function (cache){
+                    cache.put(e.request, response.clone());
+                    return response;
+                })
+            })
         })
     )
 })
